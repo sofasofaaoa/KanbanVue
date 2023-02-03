@@ -38,7 +38,11 @@ h1 {
     background-color: #fff;
     transition: 0.3s all;
 }
+textarea {
+    resize: none;
+    :
 
+}
 
 .addform{
     height: 200px;

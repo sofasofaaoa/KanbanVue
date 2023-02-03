@@ -194,8 +194,8 @@ Vue.component('col4', {
                     <li class="tasks">Date of creation:
                     {{ card.date }}</li>
                     <li class="tasks">Deadline: {{card.deadline}}</li>
-                    <li class="tasks" v-if="card.deadline >= card.comdate">Сompleted on time</li>
-                    <li class="tasks" v-if="card.deadline < card.comdate">Not completed on time</li>
+                    <li class="tasks" v-if="card.deadline >= card.comdate">Сompleted in time</li>
+                    <li class="tasks" v-if="card.deadline < card.comdate">Not completed in time</li>
                 </ul>
             </div>
         </div>
@@ -233,11 +233,11 @@ Vue.component('newcard', {
             </p>
             <div>
                 <label for="indescription">Description</label>
-                <textarea required id="indescription" v-model="description" maxlength="60"> </textarea>
+                <textarea required id="indescription" rows="5" columns="10" v-model="description" maxlength="60"> </textarea>
             </div>
             <div>
                 <label for="indeadline">Deadline</label>
-                <input required type="text" required placeholder="01.01.1990" id="indeadline" v-model="deadline">
+                <input required type="date" required placeholder="01.01.1990" id="indeadline" v-model="deadline">
             </div>
             <button type="submit">Add a task</button>
         </form>
