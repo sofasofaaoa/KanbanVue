@@ -3,7 +3,6 @@ let eventBus = new Vue()
 Vue.component('cols', {
     template:`
     <div id="cols">
-        <p class="error" v-for="error in errors">{{error}}</p>
         <newcard></newcard>
         <col1 :column1="column1"></col1>
         <col2 :column2="column2"></col2>
@@ -16,8 +15,7 @@ Vue.component('cols', {
             column1: [],
             column2: [],
             column3: [],
-            column4: [],
-            errors: []
+            column4: []
         }
     },
     methods: {
@@ -25,29 +23,18 @@ Vue.component('cols', {
     },
     mounted() {
         eventBus.$on('addColumn1', card => {
-            this.errors = []
-            if (this.column1.length < 3){
-                this.column1.push(card)
-            } else {
-                this.errors.push('There should be no more than three cards in the first column')
-            }
+            this.column1.push(card)
         })
         eventBus.$on('addColumn2', card => {
-            this.errors = []
-            if (this.column2.length < 5) {
-                this.column2.push(card)
-                this.column1.splice(this.column1.indexOf(card), 1)
-            } else {
-                this.errors.push("There should be no more than five cards in the second column")
-            }
+            this.column2.push(card)
+
+
         })
         eventBus.$on('addColumn3', card => {
             this.column3.push(card)
-            this.column2.splice(this.column2.indexOf(card), 1)
         })
-        eventBus.$on('addColumn1-3', card => {
-            this.column3.push(card)
-            this.column1.splice(this.column1.indexOf(card), 1)
+        eventBus.$on('addColumn4', card => {
+            this.column4.push(card)
         })
     },
     computed: {
@@ -60,7 +47,15 @@ Vue.component('col1', {
         <div class="col">
             <h2>Planned tasks</h2>
             <div class="cards" style="background-color: burlywood" v-for="card in column1">
-                <card :card="card"></card>
+                <a @click="deleteCard(card)">Delete</a>    <a @click="editCard(card)">Edit</a> <br>
+                <p>{{card.title}}</p>
+                <ul>
+                    <li class="tasks">Description: {{card.description}}</li>
+                    <li class="tasks">Date of creation:
+                    {{ card.date }}</li>
+                    <li class="tasks">Deadline: {{card.deadline}}</li>
+                </ul>
+                <a @click="nextcol(card)">Next Column</a>
             </div>
         </div>
     `,
@@ -79,13 +74,21 @@ Vue.component('col1', {
         }
     },
     methods: {
-        changeCompleted(card, task) {
+        nextcol(card) {
+            this.column1.splice(this.column1.indexOf(card), 1)
             eventBus.$emit('addColumn2', card)
         },
         deleteCard(card) {
             this.column1.splice(this.column1.indexOf(card), 1)
         },
+        editCard(card) {
+            card.title = prompt('new title', card.title)
+            card.description = prompt('new description', card.description)
+            card.deadline = prompt('new deadline', card.deadline)
+            card.edit = new Date().toLocaleString()
+        }
     },
+
 })
 
 Vue.component('col2', {
@@ -93,7 +96,17 @@ Vue.component('col2', {
         <div class="col">
             <h2>Tasks in progress</h2>
             <div class="cards" style="background-color: burlywood" v-for="card in column2">
-                <card :card="card"></card>
+                <a @click="editCard(card)">Edit</a> <br>
+                <p>{{card.title}}</p>
+                <ul>
+                    <li class="tasks">Description: {{card.description}}</li>
+                    <li class="tasks">Date of creation:
+                    {{ card.date }}</li>
+                    <li class="tasks">Deadline: {{card.deadline}}</li>
+                    <li class="tasks">{{ card.reason }}</li>
+                </ul>
+                <a @click="nextcol(card)">Next Column</a>
+                
             </div>
         </div>
     `,
@@ -106,19 +119,15 @@ Vue.component('col2', {
         }
     },
     methods: {
-        changeCompleted(card, task) {
-            task.completed = true
-            card.status += 1
-            let count = 0
-            for(let i = 0; i < 5; i++){
-                if (card.subtasks[i].title != null) {
-                    count++
-                }
-            }
-            if ((card.status / count) * 100 === 100) {
-                eventBus.$emit('addColumn3', card)
-                card.date = new Date().toLocaleString();
-            }
+        nextcol(card) {
+            this.column2.splice(this.column2.indexOf(card), 1)
+            eventBus.$emit('addColumn3', card)
+        },
+        editCard(card) {
+            card.title = prompt('new title', card.title)
+            card.description = prompt('new description', card.description)
+            card.deadline = prompt('new deadline', card.deadline)
+            card.edit = new Date().toLocaleString()
         }
     }
 })
@@ -128,7 +137,16 @@ Vue.component('col3', {
         <div class="col">
             <h2>Testing</h2>
             <div class="cards" style="background-color: burlywood" v-for="card in column3">
-                <card :card="card"></card>
+                <a @click="editCard(card)">Edit</a> <br>
+                <p>{{card.title}}</p>
+                <ul>
+                    <li class="tasks">Description: {{card.description}}</li>
+                    <li class="tasks">Date of creation:
+                    {{ card.date }}</li>
+                    <li class="tasks">Deadline: {{card.deadline}}</li>
+                    <li class="tasks">{{ card.reason }}</li>
+                </ul>
+                <a @click="lastcol(card)">Last Column</a>   <a @click="nextcol(card)">Next Column</a>
             </div>
         </div>
     `,
@@ -141,19 +159,20 @@ Vue.component('col3', {
         }
     },
     methods: {
-        changeCompleted(card, task) {
-            task.completed = true
-            card.status += 1
-            let count = 0
-            for(let i = 0; i < 5; i++){
-                if (card.subtasks[i].title != null) {
-                    count++
-                }
-            }
-            if ((card.status / count) * 100 === 100) {
-                eventBus.$emit('addColumn4', card)
-                card.date = new Date().toLocaleString();
-            }
+        nextcol(card) {
+            this.column3.splice(this.column3.indexOf(card), 1)
+            eventBus.$emit('addColumn4', card)
+        },
+        lastcol(card) {
+            card.reason = prompt('reason for transfer')
+            this.column3.splice(this.column3.indexOf(card), 1)
+            eventBus.$emit('addColumn2', card)
+        },
+        editCard(card) {
+            card.title = prompt('new title', card.title)
+            card.description = prompt('new description', card.description)
+            card.deadline = prompt('new deadline', card.deadline)
+            card.edit = new Date().toLocaleString()
         }
     }
 })
@@ -163,7 +182,13 @@ Vue.component('col4', {
         <div class="col">
             <h2>Completed tasks</h2>
             <div class="cards" style="background-color: burlywood" v-for="card in column4">
-                <card :card="card"></card>
+                <p>{{card.title}}</p>
+                <ul>
+                    <li class="tasks">Description: {{card.description}}</li>
+                    <li class="tasks">Date of creation:
+                    {{ card.date }}</li>
+                    <li class="tasks">Deadline: {{card.deadline}}</li>
+                </ul>
             </div>
         </div>
     `,
@@ -178,39 +203,6 @@ Vue.component('col4', {
     methods: {
 
     }
-})
-
-Vue.component('card', {
-    template: `
-    <div class="cards">
-        <a @click="deleteCard(card)">Delete</a><a @click="editCard(card)">Edit</a>
-        <input id="title" required maxlength="30" type="text" value="card.title">
-        <ul>
-            <li class="tasks">Description:
-            <textarea required id="description"  maxlength="60" value="card.description"></textarea></li>
-            <li class="tasks">Date of creation:
-            {{ card.date }}</li>
-            <li class="tasks">Deadline: 
-            <input required type="date" id="deadline"  placeholder="card.deadline"></li>
-        </ul>
-        <a @click="nextcol(card)">Next Column</a>
-    </div>
-    `,
-    props: {
-        card: {
-            type: Object,
-            required: true
-        },
-        deleteCard: {
-            type: Function
-        },
-        editCard: {
-            type: Function
-        },
-        nextcol: {
-            type: Function
-        }
-    },
 })
 
 Vue.component('newcard', {
@@ -238,7 +230,7 @@ Vue.component('newcard', {
             title: null,
             description: null,
             date: null,
-            deadline: null
+            deadline: null,
         }
     },
     methods: {
@@ -248,6 +240,8 @@ Vue.component('newcard', {
                 description: this.description,
                 date: new Date().toLocaleString(),
                 deadline: this.deadline,
+                reason: null,
+                edit: null
             }
             eventBus.$emit('addColumn1', card)
             this.title = null
