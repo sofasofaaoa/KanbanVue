@@ -102,6 +102,7 @@ Vue.component('col1', {
             card.editB = false
             this.column1.push(card)
             this.column1.splice(this.column1.indexOf(card), 1)
+            card.edit = new Date().toLocaleString()
         }
     },
     computed: {
@@ -158,6 +159,7 @@ Vue.component('col2', {
         },
 
         updateTask(card){
+            card.edit = new Date().toLocaleString()
             card.editB = false
             this.column2.push(card)
             this.column2.splice(this.column2.indexOf(card), 1)
@@ -227,6 +229,7 @@ Vue.component('col3', {
         },
 
         updateTask(card){
+            card.edit = new Date().toLocaleString()
             card.editB = false
             this.column3.push(card)
             this.column3.splice(this.column3.indexOf(card), 1)
