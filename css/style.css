@@ -17,6 +17,11 @@ h1 {
     width: 300px;
     font-size: 28px;
 }
+
+label {
+    font-size: 20px;
+}
+
 .tasks{
     display: flex;
     list-style-type: disc;
@@ -60,7 +65,7 @@ p{
 }
 
 .col {
-    width: 30%;
+    width: 25%;
     margin-right: 15px;
     height: 850px;
     text-align: center;
