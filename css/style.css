@@ -1,0 +1,69 @@
+#app{
+    text-align: center;
+}
+body {
+
+    background-color: Wheat;
+    font-family: "Nirmala UI";
+    color: #572100;
+}
+
+h1 {
+    text-align: center;
+}
+
+.addform{
+    height: 200px;
+    width: 300px;
+    font-size: 28px;
+}
+.tasks{
+    display: flex;
+    list-style-type: disc;
+    margin: 0px;
+    align-items: center;
+}
+
+.completed{
+    text-decoration: line-through;
+}
+.error{
+    position: fixed;
+    top: 400px;
+    color: red;
+    width: 200px;
+    text-wrap: normal;
+}
+
+.cards{
+    list-style-type: none;
+    font-size: 14px;
+    width: 95%;
+    background-color: burlywood;
+    border-radius: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin: 10px;
+}
+
+ul {
+    padding-left: 30px;
+}
+
+p{
+    margin: 5px;
+    text-wrap: normal;
+}
+
+#cols {
+    display: flex;
+}
+
+.col {
+    width: 30%;
+    margin-right: 15px;
+    height: 850px;
+    text-align: center;
+    background-color: white;
+    border-radius: 30px;
+}
