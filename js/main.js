@@ -123,7 +123,7 @@ Vue.component('col2', {
                     <li class="tasks">Date of creation:
                     {{ card.date }}</li>
                     <li class="tasks">Deadline: {{card.deadline}}</li>
-                    <li class="reason" v-if="card.reason != null" >Reason of transfer: <p v-for="r in card.reason">{{ r }}</p></li>
+                    <li class="reason" v-if="card.reason.length" >Reason of transfer: <p v-for="r in card.reason">{{ r }}</p></li>
                     <li class="tasks" v-if="card.edit != null">Last change: {{ card.edit}}</li>
                     <li class="tasks" v-if="card.editB">
                         <form @submit.prevent="updateTask(card)">
@@ -179,7 +179,7 @@ Vue.component('col3', {
                     <li class="tasks">Date of creation:
                     {{ card.date }}</li>
                     <li class="tasks">Deadline: {{card.deadline}}</li>
-                    <li class="reason" v-if="card.reason != null" >Reason of transfer: <p v-for="r in card.reason">{{ r }}</p></li>
+                    <li class="reason" v-if="card.reason.length" >Reason of transfer: <p v-for="r in card.reason">{{ r }}</p></li>
                     <li class="tasks" v-if="card.edit != null">Last change: {{ card.edit}}</li>
                     <li class="tasks" v-if="card.editB">
                         <form @submit.prevent="updateTask(card)">
