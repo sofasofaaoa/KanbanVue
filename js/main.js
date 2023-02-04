@@ -123,7 +123,7 @@ Vue.component('col2', {
                     <li class="tasks">Date of creation:
                     {{ card.date }}</li>
                     <li class="tasks">Deadline: {{card.deadline}}</li>
-                    <li class="tasks" v-if="card.reason != null">Reason of transfer: {{ card.reason }}</li>
+                    <li class="reason" v-if="card.reason != null" >Reason of transfer: <p v-for="r in card.reason">{{ r }}</p></li>
                     <li class="tasks" v-if="card.edit != null">Last change: {{ card.edit}}</li>
                     <li class="tasks" v-if="card.editB">
                         <form @submit.prevent="updateTask(card)">
@@ -179,7 +179,7 @@ Vue.component('col3', {
                     <li class="tasks">Date of creation:
                     {{ card.date }}</li>
                     <li class="tasks">Deadline: {{card.deadline}}</li>
-                    <li class="tasks" v-if="card.reason != null">Reason of transfer: {{ card.reason }}</li>
+                    <li class="reason" v-if="card.reason != null" >Reason of transfer: <p v-for="r in card.reason">{{ r }}</p></li>
                     <li class="tasks" v-if="card.edit != null">Last change: {{ card.edit}}</li>
                     <li class="tasks" v-if="card.editB">
                         <form @submit.prevent="updateTask(card)">
@@ -197,7 +197,7 @@ Vue.component('col3', {
                     <li class="tasks" v-if="card.transfer">
                         <form @submit.prevent="lastcol(card)">
                             <p>The reason of transfer:
-                                <input type="text" v-model="card.reason">
+                                <input type="text" id="reason_inp">
                             </p>
                             <p>
                                 <input type="submit" value="OK">
@@ -223,6 +223,8 @@ Vue.component('col3', {
             eventBus.$emit('addColumn4', card)
         },
         lastcol(card) {
+            let reason_val = document.getElementById('reason_inp').value;
+            card.reason.push(reason_val)
             card.transfer = false
             this.column3.splice(this.column3.indexOf(card), 1)
             eventBus.$emit('addColumn2', card)
@@ -303,7 +305,7 @@ Vue.component('newcard', {
                 description: this.description,
                 date: new Date().toLocaleDateString(),
                 deadline: this.deadline.split('-').reverse().join('.'),
-                reason: null,
+                reason: [],
                 transfer: false,
                 edit: null,
                 editB: false,

@@ -56,9 +56,19 @@ label {
 
 .tasks{
     display: flex;
-    list-style-type: disc;
+    list-style-type: none;
     margin: 0px;
     align-items: center;
+
+    text-wrap: normal;
+}
+
+.reason {
+
+    list-style-type: none;
+    margin: 0px;
+    align-items: center;
+    word-wrap: normal;
 }
 
 .completed{
